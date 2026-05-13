@@ -288,18 +288,24 @@ return {
 };
 ```
 
-### 🕒 Resumo Técnico: Datas e Timestamps (Pareto 80/20)
+## 🕒 Resumo Técnico: Datas e Timestamps (Foco Brasil/UTC-3)
 
-Você só precisa dominar 3 formatos:
-
-| Objetivo | Expressão JavaScript | Exemplo |
+| Objetivo | Expressão JavaScript / n8n | Exemplo Resultante |
 | --- | --- | --- |
-| **Unix Timestamp (10 dígitos)** | `{{ Math.floor(Date.now() / 1000) }}` | `1741143798` |
-| **JS Timestamp (13 dígitos)** | `{{ Date.now() }}` | `1741143798000` |
-| **Data ISO (Supabase)** | `{{ $now.toISO() }}` | `2026-03-15T...` |
-| **Data PT-BR (WhatsApp)** | `{{ $now.setLocale('pt-br').toFormat('dd/MM/yyyy HH:mm') }}` | `15/03/2026 22:49` |
-| **Unix para ISO (Banco)** | `new Date(ts * 1000).toISOString()` | `2026-04-22T23:43:48Z` |
+| **Unix Timestamp** (10 dígitos) | `{{ Math.floor(Date.now() / 1000) }}` | 1778642396 |
+| **JS Timestamp** (13 dígitos) | `{{ Date.now() }}` | 1778642396000 |
+| **Data ISO** (Supabase/DB) | `{{ $now.setZone('America/Sao_Paulo').toISO() }}` | 2026-05-12T23:19:56-03:00 |
+| **Data PT-BR** (Planilha/Zap) | `{{ $now.setZone('America/Sao_Paulo').toFormat('dd/MM/yyyy HH:mm:ss') }}` | 12/05/2026 23:19:56 |
+| **Unix para ISO** (Conversão) | `{{ DateTime.fromSeconds(timestamp).setZone('America/Sao_Paulo').toISO() }}` | 2026-05-12T23:19:56Z |
 
+---
+
+### Por que usar essas versões?
+
+* **Precisão de Fuso Horário**: Ao incluir o `.setZone('America/Sao_Paulo')`, você evita que o horário de Brasília seja confundido com o horário UTC (que está 3 horas à frente).
+* **Compatibilidade Supabase**: O Supabase aceita o formato ISO com o sufixo de timezone (ex: `-03:00`), o que é ideal para manter a integridade dos seus logs de banco de dados.
+* **Padrão para Usuário**: O formato `dd/MM/yyyy HH:mm:ss` é o padrão esperado para as colunas de "Data" nas suas planilhas de leads e histórico de chamadas.
+  
 ---
 
 # 🔁 Manipulação em Loop (Dica Sênior)

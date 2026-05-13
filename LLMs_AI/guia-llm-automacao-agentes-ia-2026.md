@@ -13,27 +13,46 @@
 
 ## 📋 Sumário
 
-- [Por que este guia existe](#-por-que-este-guia-existe)
-- [Os Modelos Analisados](#-os-modelos-analisados)
-- [Tabela de Benchmarks Gerais](#-tabela-de-benchmarks-gerais)
-- [Comparativo por Caso de Uso](#-comparativo-por-caso-de-uso)
-  - [JavaScript — Node Code n8n](#1-javascript--node-code-n8n)
-  - [Python — Scripts e Automações](#2-python--scripts-e-automações)
-  - [Fluxos n8n — JSON, Nodes e Workflows](#3-fluxos-n8n--json-nodes-e-workflows)
-  - [LangChain, LangGraph e LangSmith](#4-langchain-langgraph-e-langsmith)
-  - [Agentes IA — Conversacionais](#5-agentes-ia--conversacionais)
-  - [Engenharia de Prompts para Agentes](#6-engenharia-de-prompts-para-agentes)
-  - [OCR e Extração Estruturada de Dados](#7-ocr-e-extração-estruturada-de-dados)
-  - [Estrutura de Dados — Redis, Postgres, Supabase](#8-estrutura-de-dados--redis-postgres-supabase)
-  - [Arquitetura e Refatoração de Código](#9-arquitetura-e-refatoração-de-código)
-  - [Geração de JSON e Schemas](#10-geração-de-json-e-schemas)
-  - [Debug e Resolução de Erros](#11-debug-e-resolução-de-erros)
-  - [Multimodal — Imagem, Vídeo e Documentos](#12-multimodal--imagem-vídeo-e-documentos)
-- [Matriz de Decisão Rápida](#-matriz-de-decisão-rápida)
-- [Guia de Escolha por Perfil](#-guia-de-escolha-por-perfil)
-- [Custo-Benefício e Velocidade](#-custo-benefício-e-velocidade)
-- [Stack Recomendada por Projeto](#-stack-recomendada-por-projeto)
-- [Fontes e Referências](#-fontes-e-referências)
+- [🧠 Guia Definitivo de LLMs 2026: Qual Modelo Usar para JavaScript, Python, n8n, Automações, Agentes IA, LangChain, Supabase, Redis e Prompt Engineering](#-guia-definitivo-de-llms-2026-qual-modelo-usar-para-javascript-python-n8n-automações-agentes-ia-langchain-supabase-redis-e-prompt-engineering)
+  - [📋 Sumário](#-sumário)
+  - [🎯 Por que este guia existe](#-por-que-este-guia-existe)
+  - [🤖 Os Modelos Analisados](#-os-modelos-analisados)
+    - [Anthropic — Claude 4.x](#anthropic--claude-4x)
+    - [OpenAI — GPT-5.x / Codex](#openai--gpt-5x--codex)
+    - [Google — Gemini 3.x](#google--gemini-3x)
+    - [Bônus — DeepSeek R2](#bônus--deepseek-r2)
+  - [📊 Tabela de Benchmarks Gerais](#-tabela-de-benchmarks-gerais)
+  - [🔍 Comparativo por Caso de Uso](#-comparativo-por-caso-de-uso)
+    - [1. JavaScript — Node Code n8n](#1-javascript--node-code-n8n)
+    - [2. Python — Scripts e Automações](#2-python--scripts-e-automações)
+    - [3. Fluxos n8n — JSON, Nodes e Workflows](#3-fluxos-n8n--json-nodes-e-workflows)
+    - [4. LangChain, LangGraph e LangSmith](#4-langchain-langgraph-e-langsmith)
+    - [5. Agentes IA — Conversacionais](#5-agentes-ia--conversacionais)
+    - [6. Engenharia de Prompts para Agentes](#6-engenharia-de-prompts-para-agentes)
+    - [7. OCR e Extração Estruturada de Dados](#7-ocr-e-extração-estruturada-de-dados)
+    - [8. Estrutura de Dados — Redis, Postgres, Supabase](#8-estrutura-de-dados--redis-postgres-supabase)
+    - [9. Arquitetura e Refatoração de Código](#9-arquitetura-e-refatoração-de-código)
+    - [10. Geração de JSON e Schemas](#10-geração-de-json-e-schemas)
+    - [11. Debug e Resolução de Erros](#11-debug-e-resolução-de-erros)
+    - [12. Multimodal — Imagem, Vídeo e Documentos](#12-multimodal--imagem-vídeo-e-documentos)
+  - [🗺️ Matriz de Decisão Rápida](#️-matriz-de-decisão-rápida)
+  - [👤 Guia de Escolha por Perfil](#-guia-de-escolha-por-perfil)
+    - [🧑‍💻 Desenvolvedor Solo — n8n + JavaScript](#-desenvolvedor-solo--n8n--javascript)
+    - [🤖 Engenheiro de Agentes IA](#-engenheiro-de-agentes-ia)
+    - [🏗️ Arquiteto de Automações (LangChain + n8n)](#️-arquiteto-de-automações-langchain--n8n)
+    - [🗃️ Engenheiro de Dados (Supabase + Redis + Postgres)](#️-engenheiro-de-dados-supabase--redis--postgres)
+  - [💰 Custo-Benefício e Velocidade](#-custo-benefício-e-velocidade)
+  - [🏗️ Stack Recomendada por Projeto](#️-stack-recomendada-por-projeto)
+    - [Projeto: Automação n8n Completa (pequeno time)](#projeto-automação-n8n-completa-pequeno-time)
+    - [Projeto: Plataforma de Agentes IA Conversacionais](#projeto-plataforma-de-agentes-ia-conversacionais)
+    - [Projeto: Pipeline OCR + Extração de Dados](#projeto-pipeline-ocr--extração-de-dados)
+    - [Projeto: Sistema RAG com LangChain + Supabase](#projeto-sistema-rag-com-langchain--supabase)
+  - [🔄 Fluxograma de Decisão](#-fluxograma-de-decisão)
+  - [📝 Resumo Final — TL;DR](#-resumo-final--tldr)
+  - [📚 Fontes e Referências](#-fontes-e-referências)
+  - [🤝 Contribuindo](#-contribuindo)
+  - [⚠️ Disclaimer](#️-disclaimer)
+- [👤 Autor](#-autor)
 
 ---
 
@@ -699,3 +718,13 @@ Encontrou um benchmark mais atualizado? Tem experiência prática diferente do q
 *Se este guia foi útil, deixa uma ⭐ no repositório!*
 
 </div>
+
+---
+
+# 👤 Autor
+
+Bruno Pelatieri Goulart  
+Enterprise Automation Architect • AI • DevOps • n8n Specialist
+
+---
+
