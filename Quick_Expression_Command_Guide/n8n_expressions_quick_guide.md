@@ -201,6 +201,44 @@ Se o campo contiver `"ID: 99-abc-123"`, o código retornará `"99123"`.
 
 ---
 
+## 📌 Validação Segura de Nós Condicionais (Evitando erros de execução)
+
+
+### O Problema
+Quando estruturamos fluxos com ramificações (nós `If` ou `Switch`), é comum que determinados nós anteriores sejam ignorados dependendo do caminho que o lead tomou. Se um nó posterior tentar ler diretamente uma variável de um nó que **não foi executado**, o n8n interromperá o fluxo imediatamente com um erro crítico:
+> *“An expression references this node, but the node is unexecuted...”*
+
+Outro comportamento das versões recentes do n8n é exigir consistência de tipos. Se a condição espera um **Objeto** (indicado pelo ícone de cubo) ou uma **String**, retornar um tipo diferente (`''` vs `{}`) no operador ternário causará um erro de tipagem:
+> *“Wrong type: '' is a string but was expecting an object...”*
+
+### A Solução (Padrão Sênior)
+Utilizar a propriedade nativa `.isExecuted` combinada com um operador ternário inteligente. Isso garante que o n8n avalie se o nó de fato rodou antes de tentar buscar qualquer propriedade dentro do objeto `json`.
+
+#### 1. Abordagem para Campos de Texto (String)
+Se o campo de comparação no nó `If` estiver configurado como tipo **String** (ícone `T`), garanta o fallback retornando uma string vazia `''`:
+
+```javascript
+{{ $('NomeDoNo').isExecuted ? $('NomeDoNo').item.json.propriedade : '' }}
+
+```
+
+#### 2. Abordagem para Campos de Estrutura (Object)
+
+Se o campo de comparação no nó `If` estiver configurado como tipo **Object** (ícone de cubo), o fallback **obrigatóriamente** deve retornar um objeto vazio `{}` para não quebrar a validação de tipos do n8n:
+
+```javascript
+{{ $('NomeDoNo').isExecuted ? ($('NomeDoNo').item.json.propriedade ?? {}) : {} }}
+
+```
+
+### 🧠 Por que isso é uma Boa Prática?
+
+* **Resiliência do Workflow:** Seus bots e integrações (como o ecossistema do Diretoria.ai) não vão morrer com "caixa vermelha" quando uma nota fiscal vier errada ou um lead cair em uma exceção. O fluxo simplesmente segue o caminho do `False` de forma limpa.
+* **Logs Limpos:** Evita falsos positivos de erro no painel de execuções do n8n.
+
+
+---
+
 ## 🛠️ Sanitização de String para APIs (n8n & Evolution)
 
 Este código resolve problemas de **quebra de JSON** e **caracteres inválidos** ao enviar mensagens processadas por IAs através de requisições HTTP.
