@@ -193,7 +193,59 @@ Este é um dos pontos mais mal executados em templates modernos. Alguns princíp
 
 ---
 
-### 9. Responsividade mobile-first
+### 9. Extensões de imagem no email marketing: .webp, .jpg, .png e .gif
+
+A escolha do formato de arquivo é um detalhe técnico que impacta diretamente carregamento, compatibilidade entre clientes de email e taxa de renderização correta — por isso também entra no "núcleo duro" de qualidade técnica do template.
+
+**9.1. Visão geral comparativa**
+
+| Formato | Peso | Transparência | Animação | Compatibilidade em email | Melhor uso |
+|---|---|---|---|---|---|
+| **.jpg / .jpeg** | Baixo/médio (boa compressão) | Não | Não | Excelente (suportado por todos os clientes) | Fotos, banners hero, imagens de produto com muitas cores |
+| **.png** | Médio/alto | Sim (inclusive PNG-24 com transparência suave) | Não | Excelente (suportado por todos os clientes) | Logos, ícones, botões, elementos com fundo transparente ou texto sobreposto |
+| **.gif** | Médio (limitado a 256 cores) | Sim (transparência simples, sem suavização) | Sim | Boa, mas com ressalvas (ver 9.3) | Pequenas animações, contadores regressivos, loops curtos e leves |
+| **.webp** | Muito baixo (30-50% menor que jpg/png equivalente) | Sim | Sim | **Limitada** (ver 9.4) — ainda não é seguro como formato único | Uso interno/web; em email, apenas como parte de fallback testado |
+
+**9.2. JPG (.jpg/.jpeg) — o padrão seguro para fotografia**
+- Melhor escolha para fotos de produto, banners e imagens com muitas cores/gradientes, pois comprime bem sem perder qualidade perceptível.
+- Não suporta transparência — sempre terá um fundo sólido.
+- Ajuste a qualidade de compressão entre 60-80% para o melhor equilíbrio entre peso de arquivo e nitidez.
+
+**9.3. PNG (.png) — o padrão para elementos gráficos**
+- Ideal para logos, ícones, ilustrações com poucas cores e qualquer elemento que precise de fundo transparente.
+- PNG-8 (paleta reduzida) é mais leve e serve bem para ícones simples; PNG-24 é mais pesado, mas necessário quando há transparência suave (sombras, degradês).
+- Evite usar PNG para fotos grandes — o arquivo fica desnecessariamente pesado comparado a um JPG equivalente.
+
+**9.4. GIF (.gif) — animações leves, com cautela**
+- Único formato de imagem com suporte quase universal para animação em clientes de email (incluindo Apple Mail e a maioria dos webmails).
+- **Atenção:** o Outlook para desktop (versões baseadas no motor do Word) geralmente **não anima GIFs** — exibe apenas o primeiro frame. Por isso, o primeiro frame do GIF deve sempre conter a mensagem/CTA completos, nunca um frame "vazio" de transição.
+- Limitado a 256 cores, então não é adequado para fotografias — funciona melhor em ilustrações simples, contadores regressivos e pequenos loops.
+- Mantenha o arquivo o mais leve possível (poucos frames, baixa resolução) — GIFs pesados são uma das causas mais comuns de emails lentos para carregar.
+
+**9.5. WEBP (.webp) — o mais eficiente, mas o mais arriscado em email**
+- Formato mais moderno e leve (arquivos até 50% menores que JPG/PNG equivalentes, com qualidade similar ou superior), amplamente usado em sites por esse motivo.
+- **Problema central para email:** o suporte em clientes de email é inconsistente — historicamente, versões do Outlook (desktop) e alguns webmails corporativos **não renderizam .webp corretamente**, mostrando um ícone de imagem quebrada.
+- **Recomendação prática:** evite usar .webp como formato único em campanhas amplas até confirmar (via teste real, não apenas documentação) que sua base de assinantes usa majoritariamente clientes com suporte confirmado (Gmail e Apple Mail atuais, por exemplo). Quando usar, tenha sempre um fallback em JPG/PNG configurado no HTML.
+- Sempre faça um teste de renderização (Litmus, Email on Acid ou envio de teste manual para os principais clientes) antes de disparar uma campanha com .webp.
+
+**9.6. Regra prática de decisão rápida**
+
+```
+Foto de produto ou banner com muitas cores  → .jpg
+Logo, ícone ou elemento com transparência   → .png
+Pequena animação / contador / loop curto    → .gif (frame 1 com a mensagem completa)
+Quer o arquivo mais leve possível           → .webp, mas SEMPRE com fallback testado
+```
+
+**9.7. Boas práticas independentes do formato escolhido**
+- Comprimir todas as imagens antes do envio (ferramentas como TinyPNG, Squoosh) — meta de **abaixo de 200kb por imagem**, idealmente na casa dos 100kb.
+- Nomear o arquivo de forma descritiva (ajuda em SEO de imagem quando o email é replicado como página web, e facilita manutenção do template).
+- Sempre declarar `width` e `height` no HTML da imagem, para evitar "pulos" de layout enquanto a imagem carrega.
+- Sempre incluir `alt text` — não importa o formato escolhido, esse ponto continua sendo obrigatório (reforço da seção 8).
+
+---
+
+### 10. Responsividade mobile-first
 
 Mais de 50% dos emails são abertos primeiro no celular. Isso muda a prioridade de design:
 
@@ -205,7 +257,7 @@ Mais de 50% dos emails são abertos primeiro no celular. Isso muda a prioridade 
 
 ---
 
-### 10. Links estratégicos e foco no CTA principal
+### 11. Links estratégicos e foco no CTA principal
 
 - Cada link adicional no email é uma "fuga de atenção" do CTA principal.
 - Regra prática: **1 CTA principal + no máximo 1-2 links secundários discretos** (ex.: "ver todos os produtos", "ler mais no blog").
@@ -213,7 +265,7 @@ Mais de 50% dos emails são abertos primeiro no celular. Isso muda a prioridade 
 
 ---
 
-### 11. Consistência com a landing page (pós-clique)
+### 12. Consistência com a landing page (pós-clique)
 
 A conversão não termina no clique — ela termina na página de destino. Erros comuns que quebram essa continuidade:
 
@@ -225,7 +277,7 @@ A conversão não termina no clique — ela termina na página de destino. Erros
 
 ---
 
-### 12. O que simplificar ou cortar (os 80% de menor impacto)
+### 13. O que simplificar ou cortar (os 80% de menor impacto)
 
 | Elemento | Por que simplificar |
 |---|---|
@@ -236,7 +288,7 @@ A conversão não termina no clique — ela termina na página de destino. Erros
 
 ---
 
-### 13. Como aplicar Pareto na prática (processo contínuo)
+### 14. Como aplicar Pareto na prática (processo contínuo)
 
 1. **Meça** taxas de abertura, CTR e conversão por elemento (assunto, tipo de oferta, posição do CTA, formato de copy).
 2. **Identifique** os "top 20%" — quais assuntos, ofertas e CTAs geram consistentemente mais resultado.
@@ -256,6 +308,7 @@ A conversão não termina no clique — ela termina na página de destino. Erros
 - [ ] Proporção texto/imagem entre 40-60% (nunca email 100% imagem)
 - [ ] CTA em HTML real, nunca só dentro de imagem
 - [ ] Alt text descritivo em todas as imagens
+- [ ] Formato de imagem correto por caso de uso (.jpg fotos, .png transparência, .gif animação leve, .webp só com fallback testado)
 - [ ] Mobile-first: fonte legível, botão grande, uma coluna
 - [ ] Poucos links, todos alinhados ao CTA principal
 - [ ] Consistência total com a landing page pós-clique
